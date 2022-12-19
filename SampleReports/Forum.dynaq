@@ -1,0 +1,4 @@
+Report Forum {
+    Select ForumName, Category, Messages, Threads, Views From Forum
+    With ForumName == '{pk}'
+}

@@ -1,0 +1,4 @@
+Report SkiLiftByRiders {
+    Select Lift, Metadata, TotalUniqueLiftRiders From SkiLifts
+    With SkiLiftsByRiders(Lift == '{lift}' And TotalUniqueLiftRiders >= total)
+}

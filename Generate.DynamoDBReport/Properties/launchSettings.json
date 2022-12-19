@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Generate.DynamoDBReport": {
+      "commandName": "Project",
+      "commandLineArgs": "--modular --in \"d:\\g\\hvc.DynamoDBReport\\SampleReports\\*.dynaq\" --out \"d:\\hvc.Output\\\""
+    }
+  }
+}

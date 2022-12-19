@@ -1,0 +1,21 @@
+Report CustomerBookmarks {    
+    Select customerId, sk, createDate : Descending, description, folder, title, updateDate, url From CustomerBookmark
+    With customerId == '{id}'
+    Where title Begins With 'AWS' And url Begins With 'https:'
+}
+
+Report CustomerBookmarksByEmail {    
+    Select customerId, sk, email : Descending, fullName, userPreferences From CustomerBookmark
+    With ByEmail(email == '{email}')
+}
+
+Report CustomBookmarksByUrl {    
+    Select customerId, sk, createDate : Descending, description, folder, title, updateDate, url From CustomerBookmark
+    With ByUrl(url == '{url}')
+}
+
+Report CustomBookmarksByCustomerFolder {    
+    Select customerId, sk, createDate : Descending, description, folder, title, updateDate, url From CustomerBookmark
+    With ByCustomerFolder(customerId == '{customerId}')
+    Where title Begins With 'AWS' And updateDate > '{updateDate}'
+}

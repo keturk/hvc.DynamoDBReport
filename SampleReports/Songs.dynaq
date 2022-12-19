@@ -1,0 +1,15 @@
+Report Songs {
+    Select Id, Metadata, DownloadTimestamp: Ascending From Songs
+    With Id == '{id}' And Metadata Begins With '{metaData}'
+    Where DownloadTimestamp > '{downloadTimestamp}'
+}
+
+Report SongsByMonth {
+    Select Id, Metadata, DownloadMonth, TotalDownloadsInMonth From Songs
+    With DownloadsByMonth(DownloadMonth == '{downloadMonth}')
+}
+
+Report SongsByMonthAndDownloads {
+    Select Id, Metadata, DownloadMonth, TotalDownloadsInMonth From Songs
+    With DownloadsByMonth(DownloadMonth == '{downloadMonth}' And TotalDownloadsInMonth > '{totalDownloadsInMonth}')
+}

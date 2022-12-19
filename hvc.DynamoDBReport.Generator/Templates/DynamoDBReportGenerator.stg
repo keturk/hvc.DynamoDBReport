@@ -1,0 +1,230 @@
+﻿ImportSection(isModular) ::= <<
+<if(isModular)>
+from common import report_common
+from boto3.dynamodb.conditions import Attr, Key
+import click
+<else>
+import click
+import boto3
+from boto3.dynamodb.conditions import Attr, Key
+from prettytable import PrettyTable
+<endif>
+>>
+
+ClickDefault() ::= <<
+
+
+@click.command()
+@click.option("--aws", help="AWS Profile", required=False, default="default")
+@click.option("--csv", help="CSV output filename", required=False)
+@click.option("--silent", is_flag=True, help="Don't output to console", required=False)
+>>
+
+ClickBody(param, prompt) ::= <<
+@click.option("--<param>", prompt="<prompt>", required=True)
+>>
+ 
+MethodBody01(reportName) ::= <<
+def generate_<reportName>(aws: str, csv: str, silent: bool,
+>>
+
+StripQuotes(paramName, isModular) ::= <<
+<if(isModular)>
+    <paramName> = report_common.remove_quotes(<paramName>)
+<else>
+    if <paramName>.startswith('"') and <paramName>.endswith('"'):
+        <paramName> = <paramName>[1:-1]
+<endif>
+>>
+
+MethodBody02(isModular, outputColumns, sortColumn, reverseSort, tableName, keyName, keyCriterion, sortKeyStatement, stripQuotes, hasFilters) ::= <<
+    if silent and csv is None:
+        print("You must specify either a CSV output file or the silent option")
+        return
+
+<if(stripQuotes)><stripQuotes><endif>
+    csv_filename = csv
+<if(isModular)>
+    field_names = [
+        <outputColumns>
+    ]<else>
+
+    output_table = PrettyTable()
+    output_table.field_names = [
+        <outputColumns>
+    ]
+    <if(sortColumn)>
+    output_table.sortby = '<sortColumn>'
+    <if(reverseSort)>
+    output_table.reversesort = <reverseSort>
+    <endif>
+    <endif>
+
+    session = boto3.Session(profile_name=aws)
+    dynamodb = session.resource('dynamodb')
+    
+    table = dynamodb.Table(f'<tableName>')
+    if not silent:
+        print(f"Querying {table.table_name} table")
+
+    record_count = 0
+    has_more_data = True
+    last_key = None
+<endif>
+<if(sortKeyStatement)>
+    key_condition = Key(f'<keyName>').eq(<keyCriterion>) & <sortKeyStatement>
+<else>
+    key_condition = Key(f'<keyName>').eq(<keyCriterion>)
+<endif>
+    <if(hasFilters)>filter_expression = \\<endif>
+>>
+
+MethodBody03(isModular, tableName, sortColumn, reverseSort, reportName, indexName, hasFilters) ::= <<
+<if(isModular)>
+    report_common.generate_report(
+        aws_profile=aws,
+        table_name=f'<tableName>', index_name=<if(indexName)>f'<indexName>'<else>None<endif>,
+        sort_column=<if(sortColumn)>f'<sortColumn>'<else>None<endif>, reverse_sort=<reverseSort>,
+        field_names=field_names,
+        key_condition=key_condition,
+        filter_expression=<if(hasFilters)>filter_expression<else>None<endif>,
+        csv_filename=csv_filename, silent=silent)
+
+
+<else>
+    while has_more_data:
+        if last_key:
+            response = table.query(
+                <if(indexName)>IndexName=f'<indexName>',<endif>
+                KeyConditionExpression=key_condition,
+                <if(hasFilters)>FilterExpression=filter_expression,<endif>
+                ExclusiveStartKey=last_key
+            )
+        else:
+            response = table.query(
+                <if(indexName)>IndexName=f'<indexName>',<endif>
+                KeyConditionExpression=key_condition<if(hasFilters)>,
+                FilterExpression=filter_expression<endif>
+            )
+
+<forEachItem()>
+<calculateRecordCount()>
+<checkLastKey()>
+<writeToCSV()>
+<writeToConsole()>
+
+<endif>
+
+if __name__ == "__main__":
+    generate_<reportName>()
+>>
+
+ReportCommon() ::= <<
+import boto3
+from prettytable import PrettyTable
+
+
+def remove_quotes(s):
+    if s.startswith('"') and s.endswith('"'):
+        return s[1:-1]
+    return s
+
+
+def table_query(table, index_name, key_condition, filter_expression, last_key):
+    if index_name is None:
+        if last_key is None:
+            if filter_expression is None:
+                return table.query(KeyConditionExpression=key_condition)
+            else:
+                return table.query(KeyConditionExpression=key_condition, FilterExpression=filter_expression)
+        else:
+            if filter_expression is None:
+                return table.query(KeyConditionExpression=key_condition, ExclusiveStartKey=last_key)
+            else:
+                return table.query(KeyConditionExpression=key_condition, ExclusiveStartKey=last_key,
+                                   FilterExpression=filter_expression)
+    else:
+        if last_key is None:
+            if filter_expression is None:
+                return table.query(IndexName=index_name, KeyConditionExpression=key_condition)
+            else:
+                return table.query(IndexName=index_name, KeyConditionExpression=key_condition,
+                                   FilterExpression=filter_expression)
+        else:
+            if filter_expression is None:
+                return table.query(IndexName=index_name, KeyConditionExpression=key_condition,
+                                   ExclusiveStartKey=last_key)
+            else:
+                return table.query(IndexName=index_name, KeyConditionExpression=key_condition,
+                                   ExclusiveStartKey=last_key,
+                                   FilterExpression=filter_expression)
+
+
+def generate_report(aws_profile,
+                    table_name, index_name,
+                    sort_column, reverse_sort,
+                    field_names,
+                    key_condition, filter_expression,
+                    csv_filename=None, silent=False):
+    session = boto3.Session(profile_name=aws_profile)
+    dynamodb = session.resource('dynamodb')
+
+    table = dynamodb.Table(table_name)
+
+    record_count = 0
+    has_more_data = True
+    last_key = None
+
+    output_table = PrettyTable()
+    output_table.field_names = field_names
+    output_table.sortby = sort_column
+    output_table.reversesort = reverse_sort
+    if not silent:
+        print(f"Querying {table.table_name} table")
+
+    while has_more_data:
+        response = table_query(table, index_name, key_condition, filter_expression, last_key)
+
+<forEachItem()>
+<calculateRecordCount()>
+<checkLastKey()>
+<writeToCSV()>
+<writeToConsole()>
+
+>>
+
+forEachItem() ::= <<
+        for item in response["Items"]:
+            row_values = []
+            for column_header in output_table.field_names:
+                if column_header in item.keys():
+                    row_values.append(item[column_header])
+                else:
+                    row_values.append("")
+            output_table.add_row(row_values)
+>>
+
+calculateRecordCount() ::= <<
+
+        record_count = record_count + len(response["Items"])
+>>
+
+checkLastKey() ::= <<
+        last_key = response.get('LastEvaluatedKey')
+        if not last_key:
+            has_more_data = False
+
+>>
+
+writeToCSV() ::= <<
+    if csv_filename:
+        with open(csv_filename, 'w', newline='') as csv_file:
+            csv_file.write(output_table.get_csv_string())
+
+>>
+
+writeToConsole() ::= <<
+    if not silent:
+        print(output_table)
+        print(f'Number of records: {record_count}')
+>>

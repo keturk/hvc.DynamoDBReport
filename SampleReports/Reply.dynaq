@@ -1,0 +1,9 @@
+Report Replies {
+    Select Id, ReplyDateTime, Message, PostedBy From Reply
+    With Id == '{id}' And ReplyDateTime == '{replyDateTime}'
+}
+
+Report RepliesPostedBy {
+    Select Id, ReplyDateTime, Message, PostedBy From Reply
+    With PostedBy-Message-Index(PostedBy == '{postedBy}' And Message Begins With '{message}')
+}

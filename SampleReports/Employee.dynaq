@@ -1,0 +1,9 @@
+Report Employees {
+    Select LoginAlias, FirstName, LastName, ManagerLoginAlias, Skills From Employee
+    With LoginAlias == '{alias}'
+}
+
+Report EmployeeDirectReports {
+    Select LoginAlias, FirstName, LastName: Ascending, ManagerLoginAlias From Employee
+    With DirectReports(ManagerLoginAlias == '{alias}')
+}

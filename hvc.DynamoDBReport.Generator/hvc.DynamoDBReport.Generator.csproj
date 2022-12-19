@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Templates\DynamoDBReportGenerator.stg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Templates\DynamoDBReportGenerator.stg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="hvc.DataStructures" Version="1.0.1" />
+    <PackageReference Include="hvc.Generator" Version="1.0.0" />
+    <PackageReference Include="hvc.Parser" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\hvc.DynamoDBReport.Model\hvc.DynamoDBReport.Model.csproj" />
+  </ItemGroup>
+
+</Project>
