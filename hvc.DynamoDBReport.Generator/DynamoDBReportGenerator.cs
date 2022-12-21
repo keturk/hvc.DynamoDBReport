@@ -79,19 +79,23 @@ public class DynamoDBReportGenerator : CodeGenerator
 
     private void Generate()
     {
-        var reportName = _dynamoDBReport.Name.Original.SnakeCase();
-        var outputColumns = new StringBuilder();
-        var sortColumn = String.Empty;
-        var reverseSort = String.Empty;
-        var tableName = _dynamoDBReport.Table.Value;
-
         if (_dynamoDBReport.KeyCriterion == null)
             throw new InvalidOperationException("Mandatory value keyCriterion not found!");
 
-        var keyName = _dynamoDBReport.KeyCriterion.Name;
-        var keyCriterion = _dynamoDBReport.KeyCriterion.Value;
+        var reportName = _dynamoDBReport.Name.Original.SnakeCase();
+        var tableName = _dynamoDBReport.Table.Value;
         var indexName = _dynamoDBReport.Index.Value;
 
+        var keyName = _dynamoDBReport.KeyCriterion.Name;
+        var keyCriterion = _dynamoDBReport.KeyCriterion.Value;
+
+        var outputColumns = new StringBuilder();
+
+        var sortColumn = String.Empty;
+        var reverseSort = String.Empty;
+
+
+        // Generate outputColumns block for the report
         var oneTimeFlag = new OneTimeFlag();
         _dynamoDBReport.OutputColumns.ForEach(outputColumn =>
         {
@@ -110,6 +114,7 @@ public class DynamoDBReportGenerator : CodeGenerator
             reverseSort = outputColumn.Descending.IsSet ? "True" : String.Empty;
         });
 
+        // generate import section
         _python
             .Reset()
             .Line(TemplateStack["ImportSection"]
@@ -117,6 +122,7 @@ public class DynamoDBReportGenerator : CodeGenerator
                 .Render())
             .Line(TemplateStack["ClickDefault"].Render());
 
+        // generate custom parameters
         _dynamoDBReport.Parameters.ForEach(parameter =>
         {
             _python
@@ -151,10 +157,10 @@ public class DynamoDBReportGenerator : CodeGenerator
 
         var hasFilters = _dynamoDBReport.FilterCriterion.Count > 0 ? "hasFilters" : String.Empty;
 
-        var sortKeyStatement = new StringBuilder();
-
-        if (_dynamoDBReport.SortKeyCriterion != null)
-            sortKeyStatement.Append(GenerateOutput("Key", _dynamoDBReport.SortKeyCriterion));
+        var sortKeyStatement =
+            _dynamoDBReport.SortKeyCriterion != null
+                ? GenerateOutput("Key", _dynamoDBReport.SortKeyCriterion)
+                : String.Empty;
 
         _python
             .Line(TemplateStack["MethodBody02"]
@@ -203,6 +209,7 @@ public class DynamoDBReportGenerator : CodeGenerator
 
     private void GenerateReportCommon()
     {
+        // Since this method is called from Generate method which is called for each report, we will skip writing this file if it already exists
         _python
             .Reset()
             .Line(TemplateStack["ReportCommon"].Render())
@@ -211,6 +218,7 @@ public class DynamoDBReportGenerator : CodeGenerator
 
     private void GenerateRequirementsTxt()
     {
+        // Since this method is called from Generate method which is called for each report, we will skip writing this file if it already exists
         _python
             .Reset()
             .Line(TemplateStack["RequirementsTxt"].Render())
