@@ -1,3 +1,9 @@
+// Requires following input parameters
+//      pk : Partitin Key
+//      sk : Sort Key
+// Output Columns
+//      PK, SK, CreatedBy, CreatedDate, LastModified, OfferDescription, OfferEffectiveDate, OfferExpiryDate, OfferId, OfferSubType, OfferType, OfferUrl
+
 Report CreditCardOffers {
     Select PK, SK, CreatedBy, CreatedDate, LastModified: Descending, OfferDescription, OfferEffectiveDate, OfferExpiryDate, OfferId, OfferSubType, OfferType, OfferUrl From CreditCardOffers
     With PK == '{pk}' And SK Begins With '{sk}'

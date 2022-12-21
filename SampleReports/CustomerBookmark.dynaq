@@ -9,12 +9,12 @@ Report CustomerBookmarksByEmail {
     With ByEmail(email == '{email}')
 }
 
-Report CustomBookmarksByUrl {    
+Report CustomerBookmarksByUrl {    
     Select customerId, sk, createDate : Descending, description, folder, title, updateDate, url From CustomerBookmark
     With ByUrl(url == '{url}')
 }
 
-Report CustomBookmarksByCustomerFolder {    
+Report CustomerBookmarksByCustomerFolder {    
     Select customerId, sk, createDate : Descending, description, folder, title, updateDate, url From CustomerBookmark
     With ByCustomerFolder(customerId == '{customerId}')
     Where title Begins With 'AWS' And updateDate > '{updateDate}'
