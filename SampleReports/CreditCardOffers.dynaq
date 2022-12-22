@@ -1,10 +1,22 @@
-// Requires following input parameters
-//      pk : Partitin Key
+// --------------------------------------------
+// Generated Python script requires following input parameters
+//      pk : Partition Key
 //      sk : Sort Key
-// Output Columns
-//      PK, SK, AccountId, AccountOfferEndDate, AccountOfferStartDate, GSI1SK, OfferId, OfferType, Status, StatusChangeDate
-
+//
+// Usage Example: 
+//      python .\credit_card_offers.py --pk ACCT#49864709 --sk O
+//
+// Querying CreditCardOffers table
+// +---------------+-----------+-----------+---------------------+-----------------------+----------------+---------+-----------+----------+------------------+
+// |       PK      |     SK    | AccountId | AccountOfferEndDate | AccountOfferStartDate |     GSI1SK     | OfferId | OfferType |  Status  | StatusChangeDate |
+// +---------------+-----------+-----------+---------------------+-----------------------+----------------+---------+-----------+----------+------------------+
+// | ACCT#49864709 | OFR#10003 |  49864709 |      2020-12-01     |       2020-03-01      |  DECLINED#BAL  |  10003  |    BAL    | DECLINED |    2020-03-25    |
+// | ACCT#49864709 | OFR#10021 |  49864709 |      2020-12-01     |       2020-03-01      | DECLINED#PROMO |  10021  |   PROMO   | DECLINED |    2020-03-25    |
+// +---------------+-----------+-----------+---------------------+-----------------------+----------------+---------+-----------+----------+------------------+
+// Number of records: 2
+// 
 Report CreditCardOffers {
     Select PK, SK, AccountId, AccountOfferEndDate, AccountOfferStartDate, GSI1SK, OfferId, OfferType, Status, StatusChangeDate From CreditCardOffers
     With PK == '{pk}' And SK Begins With '{sk}'
 }
+// --------------------------------------------

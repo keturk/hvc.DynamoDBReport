@@ -1,15 +1,70 @@
+// --------------------------------------------
+// Generated Python script requires following input parameters
+//      id : Partition Key
+//      meta_data : Sort Key
+//      download_timestamp : Filter
+//
+// Usage Example: 
+//      python .\songs.py --id 2 --meta_data 'Dld' --download_timestamp 2018
+// Querying Songs table
+// +----+----------------+---------------------+
+// | Id |    Metadata    |  DownloadTimestamp  |
+// +----+----------------+---------------------+
+// | 2  | Dld-9349823684 | 2018-01-02T00:00:00 |
+// | 2  | Dld-9349823685 | 2018-01-03T00:00:02 |
+// | 2  | Dld-9349836234 | 2018-01-04T01:00:03 |
+// | 2  | Dld-9349823686 | 2018-01-05T01:10:03 |
+// +----+----------------+---------------------+
+// Number of records: 4
+//
 Report Songs {
     Select Id, Metadata, DownloadTimestamp: Ascending From Songs
     With Id == '{id}' And Metadata Begins With '{metaData}'
     Where DownloadTimestamp > '{downloadTimestamp}'
 }
+// --------------------------------------------
 
+
+// --------------------------------------------
+// Generated Python script requires following input parameters
+//      download_month : Partition Key
+//
+// Usage Example: 
+//      python .\songs_by_month.py --download_month '01-2018'
+// Querying Songs table
+// +----+---------------+---------------+-----------------------+
+// | Id |    Metadata   | DownloadMonth | TotalDownloadsInMonth |
+// +----+---------------+---------------+-----------------------+
+// | 1  | Month-01-2018 |    01-2018    |           3           |
+// | 2  | Month-01-2018 |    01-2018    |           4           |
+// +---+---------------+---------------+-----------------------+
+// Number of records: 2
+//
 Report SongsByMonth {
     Select Id, Metadata, DownloadMonth, TotalDownloadsInMonth From Songs
     With DownloadsByMonth(DownloadMonth == '{downloadMonth}')
 }
+// --------------------------------------------
 
+
+// --------------------------------------------
+// Generated Python script requires following input parameters
+//      download_month : Partition Key
+//      total_downloads_in_month : Sort Key
+//
+// Usage Example: 
+//      python .\songs_by_month_and_downloads.py --download_month '01-2018' --total_downloads_in_month 2
+// Querying Songs table
+// +----+---------------+---------------+-----------------------+
+// | Id |    Metadata   | DownloadMonth | TotalDownloadsInMonth |
+// +----+---------------+---------------+-----------------------+
+// | 1  | Month-01-2018 |    01-2018    |           3           |
+// | 2  | Month-01-2018 |    01-2018    |           4           |
+// +----+---------------+---------------+-----------------------+
+// Number of records: 2
+//
 Report SongsByMonthAndDownloads {
     Select Id, Metadata, DownloadMonth, TotalDownloadsInMonth From Songs
     With DownloadsByMonth(DownloadMonth == '{downloadMonth}' And TotalDownloadsInMonth > '{totalDownloadsInMonth}')
 }
+// --------------------------------------------

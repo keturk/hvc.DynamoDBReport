@@ -1,9 +1,42 @@
+// --------------------------------------------
+// Generated Python script requires following input parameters
+//      id : Partition Key
+//      reply_date_time : Sort Key
+//
+// Usage Example: 
+//      python .\replies.py --id 2 --reply_date_time '7/5/2019'
+// Querying Reply table
+// +----+---------------+-------------------------------------------------------------------------------------------------+---------------------+
+// | Id | ReplyDateTime |                                             Message                                             |       PostedBy      |
+// +----+---------------+-------------------------------------------------------------------------------------------------+---------------------+
+// | 2  |    7/5/2019   | Ability to delete a global secondary index before its creation is completed will be very useful | richard@example.com |
+// +----+---------------+-------------------------------------------------------------------------------------------------+---------------------+
+// Number of records: 1
+//
 Report Replies {
     Select Id, ReplyDateTime, Message, PostedBy From Reply
     With Id == '{id}' And ReplyDateTime == '{replyDateTime}'
 }
+// --------------------------------------------
 
+
+// --------------------------------------------
+// Generated Python script requires following input parameters
+//      posted_y : Partition Key
+//      message : Sort Key
+//
+// Usage Example: 
+//      python .\replies_posted_by.py --posted_by 'mary@example.com' --message I
+// Querying Reply table
+// +----+---------------+------------------------------------------------------------------------------------------+------------------+
+// | Id | ReplyDateTime |                                         Message                                          |     PostedBy     |
+// +----+---------------+------------------------------------------------------------------------------------------+------------------+
+// | 3  |   7/15/2019   | I really love the support for 25 unique items and 4 MB of data per transactional request | mary@example.com |
+// +----+---------------+------------------------------------------------------------------------------------------+------------------+
+// Number of records: 1
+//
 Report RepliesPostedBy {
     Select Id, ReplyDateTime, Message, PostedBy From Reply
     With PostedBy-Message-Index(PostedBy == '{postedBy}' And Message Begins With '{message}')
 }
+// --------------------------------------------

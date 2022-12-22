@@ -1,4 +1,21 @@
+// --------------------------------------------
+// Generated Python script requires following input parameters
+//      posted_y : Partition Key
+//      message : Sort Key
+//
+// Usage Example: 
+//      python .\ski_lift_by_riders.py --lift 'Lift 23' --total 500
+// Querying SkiLifts table
+// +---------+----------+-----------------------+
+// |   Lift  | Metadata | TotalUniqueLiftRiders |
+// +---------+----------+-----------------------+
+// | Lift 23 | 01/01/20 |          1000         |
+// | Lift 23 | 03/01/20 |          1500         |
+// +---------+----------+-----------------------+
+// Number of records: 2
+//
 Report SkiLiftByRiders {
     Select Lift, Metadata, TotalUniqueLiftRiders From SkiLifts
     With SkiLiftsByRiders(Lift == '{lift}' And TotalUniqueLiftRiders >= total)
 }
+// --------------------------------------------

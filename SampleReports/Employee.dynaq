@@ -1,9 +1,43 @@
+// --------------------------------------------
+// Generated Python script requires following input parameters
+//      alias : Partition Key
+//
+// Usage Example: 
+//      python .\employees.py --alias johns      
+//
+// Querying Employee table
+// +------------+-----------+----------+-------------------+--------------------------+
+// | LoginAlias | FirstName | LastName | ManagerLoginAlias |          Skills          |
+// +------------+-----------+----------+-------------------+--------------------------+
+// |   johns    |    John   |  Stiles  |         NA        | {'executive management'} |
+// +------------+-----------+----------+-------------------+--------------------------+
+// Number of records: 1
+//
 Report Employees {
     Select LoginAlias, FirstName, LastName, ManagerLoginAlias, Skills From Employee
     With LoginAlias == '{alias}'
 }
+// --------------------------------------------
 
+
+// --------------------------------------------
+// Generated Python script requires following input parameters
+//      alias : Partition Key
+//
+// Usage Example: 
+//      python .\employee_direct_reports.py --alias johns
+// Querying Employee table
+// +------------+-----------+----------+-------------------+
+// | LoginAlias | FirstName | LastName | ManagerLoginAlias |
+// +------------+-----------+----------+-------------------+
+// |   marym    |    Mary   |  Major   |       johns       |
+// |   diegor   |   Diego   | Ramirez  |       johns       |
+// |  marthar   |   Martha  |  Rivera  |       johns       |
+// +------------+-----------+----------+-------------------+
+// Number of records: 3
+//
 Report EmployeeDirectReports {
     Select LoginAlias, FirstName, LastName: Ascending, ManagerLoginAlias From Employee
     With DirectReports(ManagerLoginAlias == '{alias}')
 }
+// --------------------------------------------

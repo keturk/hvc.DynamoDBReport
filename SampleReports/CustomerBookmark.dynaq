@@ -1,21 +1,90 @@
+// --------------------------------------------
+// Generated Python script requires following input parameters
+//      id : Partition Key
+//
+// Usage Example: 
+//      python .\customer_bookmarks.py --id 123
+// Querying CustomerBookmark table
+// +------------+--------------------------------+---------------------------+---------------------+--------+-------------+---------------------------+--------------------------------+
+// | customerId |               sk               |         createDate        |     description     | folder |    title    |         updateDate        |              url               |
+// +------------+--------------------------------+---------------------------+---------------------+--------+-------------+---------------------------+--------------------------------+
+// |    123     |     https://aws.amazon.com     | 2020-03-25T09:16:46-07:00 | Amazon Web Services | Cloud  |     AWS     | 2020-03-25T09:16:46-07:00 |     https://aws.amazon.com     |
+// |    123     | https://console.aws.amazon.com | 2020-03-25T09:16:43-07:00 |     Web console     | Cloud  | AWS Console | 2020-03-25T09:16:43-07:00 | https://console.aws.amazon.com |
+// +------------+--------------------------------+---------------------------+---------------------+--------+-------------+---------------------------+--------------------------------+
+// Number of records: 2
+//
 Report CustomerBookmarks {    
     Select customerId, sk, createDate : Descending, description, folder, title, updateDate, url From CustomerBookmark
     With customerId == '{id}'
     Where title Begins With 'AWS' And url Begins With 'https:'
 }
+// --------------------------------------------
 
+
+// --------------------------------------------
+// Generated Python script requires following input parameters
+//      email : Partition Key
+//
+// Usage Example: 
+//      python .\customer_bookmarks_by_email.py --email shirley@example.net
+//
+// Querying CustomerBookmark table
+// +------------+----------+---------------------+-------------------+------------------------------------------------------------------+
+// | customerId |    sk    |        email        |      fullName     |                         userPreferences                          |
+// +------------+----------+---------------------+-------------------+------------------------------------------------------------------+
+// |    123     | CUST#123 | shirley@example.net | Shirley Rodriguez | {“language”: “en”, “sort”: “date”, “sortDirection”: “ascending”} |
+// +------------+----------+---------------------+-------------------+------------------------------------------------------------------+
+// Number of records: 1
+//
 Report CustomerBookmarksByEmail {    
     Select customerId, sk, email : Descending, fullName, userPreferences From CustomerBookmark
     With ByEmail(email == '{email}')
 }
+// --------------------------------------------
 
+
+// --------------------------------------------
+// Generated Python script requires following input parameters
+//      url : Partition Key
+//
+// Usage Example: 
+//      python .\customer_bookmarks_by_url.py --url 'https://aws.amazon.com'
+//
+// Querying CustomerBookmark table
+// +------------+------------------------+---------------------------+---------------------+--------+-------+---------------------------+------------------------+
+// | customerId |           sk           |         createDate        |     description     | folder | title |         updateDate        |          url           |
+// +------------+------------------------+---------------------------+---------------------+--------+-------+---------------------------+------------------------+
+// |    123     | https://aws.amazon.com | 2020-03-25T09:16:46-07:00 | Amazon Web Services | Cloud  |  AWS  | 2020-03-25T09:16:46-07:00 | https://aws.amazon.com |
+// |    321     | https://aws.amazon.com | 2020-03-25T09:16:45-07:00 | Amazon Web Services | Tools  |  AWS  | 2020-03-25T09:16:45-07:00 | https://aws.amazon.com |
+// +------------+------------------------+---------------------------+---------------------+--------+-------+---------------------------+------------------------+
+// Number of records: 2
+//
 Report CustomerBookmarksByUrl {    
     Select customerId, sk, createDate : Descending, description, folder, title, updateDate, url From CustomerBookmark
     With ByUrl(url == '{url}')
 }
+// --------------------------------------------
 
+
+// --------------------------------------------
+// Generated Python script requires following input parameters
+//      customer_id : Partition Key
+//      update_date : Filter
+// Usage Example: 
+//      python .\customer_bookmarks_by_customer_folder.py --customer_id 123 --update_date 2020
+//
+// Querying CustomerBookmark table
+// +------------+--------------------------------+---------------------------+---------------------+--------+-------------+---------------------------+--------------------------------+
+// | customerId |               sk               |         createDate        |     description     | folder |    title    |         updateDate        |              url               |
+// +------------+--------------------------------+---------------------------+---------------------+--------+-------------+---------------------------+--------------------------------+
+// |    123     |     https://aws.amazon.com     | 2020-03-25T09:16:46-07:00 | Amazon Web Services | Cloud  |     AWS     | 2020-03-25T09:16:46-07:00 |     https://aws.amazon.com     |
+// |    123     | https://console.aws.amazon.com | 2020-03-25T09:16:43-07:00 |     Web console     | Cloud  | AWS Console | 2020-03-25T09:16:43-07:00 | https://console.aws.amazon.com |
+// +------------+--------------------------------+---------------------------+---------------------+--------+-------------+---------------------------+--------------------------------+
+// Number of records: 2
+//
 Report CustomerBookmarksByCustomerFolder {    
     Select customerId, sk, createDate : Descending, description, folder, title, updateDate, url From CustomerBookmark
     With ByCustomerFolder(customerId == '{customerId}')
     Where title Begins With 'AWS' And updateDate > '{updateDate}'
 }
+// --------------------------------------------

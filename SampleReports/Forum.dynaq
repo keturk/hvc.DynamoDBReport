@@ -1,4 +1,19 @@
+// --------------------------------------------
+// Generated Python script requires following input parameters
+//      pk : Partition Key
+//
+// Usage Example: 
+//      python .\forum.py --pk 'Amazon Athena'
+// Querying Forum table
+// +---------------+---------------------+----------+---------+-------+
+// |   ForumName   |       Category      | Messages | Threads | Views |
+// +---------------+---------------------+----------+---------+-------+
+// | Amazon Athena | Amazon Web Services |    10    |    43   |   55  |
+// +---------------+---------------------+----------+---------+-------+
+// Number of records: 1
+//
 Report Forum {
     Select ForumName, Category, Messages, Threads, Views From Forum
     With ForumName == '{pk}'
 }
+// --------------------------------------------
