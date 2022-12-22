@@ -1,4 +1,4 @@
-# Open Source Attributions
+## Open Source Attributions
 
 For domain specific language parsing, **hvc.DynamoDBReport** uses **[Antlr4](https://www.antlr.org/)**. Antrl4 is a BSD licensed open source parser generator started by **[Professor Terence J. Parr](https://en.wikipedia.org/wiki/Terence_Parr)**
 
@@ -6,7 +6,9 @@ For domain specific language parsing, **hvc.DynamoDBReport** uses **[Antlr4](htt
 
 For parts of code generation, **hvc.DynamoDBReport** uses **[StringTemplate4](https://www.stringtemplate.org/)** template engine which was also started by **Professor Parr**. 
 
-# Introduction
+Generated code uses [PrettyTable](https://code.google.com/archive/p/prettytable/) python module to display reports as visually appealing ASCII tables.
+
+## What is hvc.DynamoDBReport?
 Simply, **hvc.DynamoDBReport** parses queries defined in a simple domain specific language (DSL) and generates Python script(s) which can be used to query an [AWS DynamoDB](https://docs.aws.amazon.com/dynamodb/index.html) table using **Boto3** and **PrettyTable**. 
 
 From report definition below, **hvc.DynamoDBReport** generates a Python script that can be used to generate PrettyTable report and/or CSV file as output.
@@ -34,14 +36,14 @@ Number of records: 2
 
 ```
 
-# Target Platforms
+## Target Platforms
 **hvc.DynamoDBReport** is developed with **.NET 6** as a cross-platform project. **.Net 6** supports **Microsoft Windows**, **Linux**, and **Mac** operating systems as is the x64 architecture and ARM of **Windows** and **Linux** are supported.
 
-# **hvc.DynamoDBReport** Project Dependency Diagram
+## **hvc.DynamoDBReport** Project Dependency Diagram
 ![Project Dependency Diagram](/Project_Dependency_Diagram.png)
 
 
-# Project Details
+## Project Details
 You can find more details in following links.
 
 * [Generate.DynamoDBReport README](/Generate.DynamoDBReport/README.md)
@@ -54,8 +56,8 @@ You can find more details in following links.
 
 * [Sample Reports](/SampleReports/README.md)
 
-# PartiQL
-As of now, **hvc.DynamoDBReport** generates a Python script that uses Boto3. But generated code does NOT support [PartiQL](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ql-reference.html) which also can be used to query AWS DynamoDB tables. 
+## PartiQL
+As of now, **hvc.DynamoDBReport** generates a Python script that uses Boto3 table.query method. The generated code does NOT support [PartiQL](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ql-reference.html). 
 
 Although, it doesn't support **PartiQL** yet, **hvc.DynamoDBReport** is not developed as an alternative to **PartiQL**. Future versions of **hvc.DynamoDBReport** may add **PartiQL** support if there is enough interest for it.
 
