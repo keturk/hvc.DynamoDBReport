@@ -39,7 +39,7 @@ internal class Program
         [UsedImplicitly]
         public String OutputFolder { get; set; } = String.Empty;
 
-        [Option('i', "in", Required = true, HelpText = "List of report files. e.g. `c:\\folder\\*.dynaq`")]
+        [Option('i', "in", Required = true, HelpText = "List of report files. e.g. \"c:\\folder\\*.dynaq\"")]
         [UsedImplicitly]
         public String Input { get; set; } = String.Empty;
 
@@ -60,7 +60,8 @@ internal class Program
                 outputFolder = o.OutputFolder;
                 input = o.Input;
                 isModular = o.Modular;
-            });
+            })
+            .WithNotParsed(o => Environment.Exit(1));
 
         DynamoDBReportParser.Initialize();
 
@@ -81,6 +82,7 @@ internal class Program
         // Parse all dynaq files
         foreach (var file in files)
         {
+            Console.WriteLine($"Reading {file}...");
             var dynamoDBReport = hvc.Parser.Parser.Get(file, true) ??
                                  throw new InvalidOperationException("Expecting an AWS DynamoDB report file!");
 
@@ -89,6 +91,10 @@ internal class Program
 
         // Generate Python scripts for all parsed reports
         foreach (var dynamoDBReport in DynamoDBReportCatalog.Reports.AllItems)
-            DynamoDBReportGenerator.GenerateCode(String.IsNullOrWhiteSpace(outputFolder) ? "." : outputFolder.Unquote(), dynamoDBReport, isModular);
+        {
+            Console.WriteLine($"Generating {dynamoDBReport.Name.Original} report...");
+            DynamoDBReportGenerator.GenerateCode(String.IsNullOrWhiteSpace(outputFolder) ? "." : outputFolder.Unquote(),
+                dynamoDBReport, isModular);
+        }
     }
 }

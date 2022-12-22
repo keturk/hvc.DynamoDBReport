@@ -17,3 +17,5 @@ As of now, **hvc.DynamoDBReport** generates a Python script that uses Boto3. But
 
 Although, it doesn't support **PartiQL** for now, **hvc.DynamoDBReport** is not developed as an alternative to **PartiQL**. Future versions of **hvc.DynamoDBReport** may add **PartiQL** support if there is enough interest for it.
 
+# Target Platforms
+**hvc.DynamoDBReport** is developed with **.NET 6** as a cross-platform project. **.Net 6** supports **Microsoft Windows**, **Linux**, and **Mac** operating systems as is the x64 architecture and ARM of **Windows** and **Linux** are supported.
