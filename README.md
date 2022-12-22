@@ -9,13 +9,30 @@ For parts of code generation, **hvc.DynamoDBReport** uses **[StringTemplate4](ht
 SimpleTemplate4 is implicitly used via [hvc.Generator](https://github.com/keturk/hvc.Generator) nuget package which has it's own GitHub repository.
 
 
-
 # Introduction
 Simply, **hvc.DynamoDBReport** parses queries defined with a simple domain specific language (DSL) and generates Python script(s) which can query an [AWS DynamoDB](https://docs.aws.amazon.com/dynamodb/index.html) table using **Boto3** and **PrettyTable**.
 
 As of now, **hvc.DynamoDBReport** generates a Python script that uses Boto3. But generated code does NOT support [PartiQL](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ql-reference.html) which also can be used to query AWS DynamoDB tables. 
 
-Although, it doesn't support **PartiQL** for now, **hvc.DynamoDBReport** is not developed as an alternative to **PartiQL**. Future versions of **hvc.DynamoDBReport** may add **PartiQL** support if there is enough interest for it.
+Although, it doesn't support **PartiQL** yet, **hvc.DynamoDBReport** is not developed as an alternative to **PartiQL**. Future versions of **hvc.DynamoDBReport** may add **PartiQL** support if there is enough interest for it.
 
 # Target Platforms
 **hvc.DynamoDBReport** is developed with **.NET 6** as a cross-platform project. **.Net 6** supports **Microsoft Windows**, **Linux**, and **Mac** operating systems as is the x64 architecture and ARM of **Windows** and **Linux** are supported.
+
+
+# **hvc.DynamoDBReport** Project Dependency Diagram
+![Project Dependency Diagram](/Project_Dependency_Diagram.png)
+
+
+# Project Details
+You can find more details in following links.
+
+* [Generate.DynamoDBReport README](/Generate.DynamoDBReport/README.md)
+
+* [hvc.DynamoDBReport.Generator README](/hvc.DynamoDBReport.Generator/README.md)
+
+* [hvc.DynamoDBReport.Model README](/hvc.DynamoDBReport.Model/README.md)
+
+* [hvc.DynamoDBReport.Parser README](/hvc.DynamoDBReport.Parser/README.md)
+
+* [Sample Reports](/SampleReports/README.md)
