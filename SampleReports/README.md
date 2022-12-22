@@ -1,7 +1,7 @@
 # Prerequisites
 Sample reports provided here use [AWS sample data models for NoSQL Workbench](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/workbench.SampleModels.html). 
 
-You can use [NoSQL Workbench for DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/workbench.html) to install these tables to your AWS account.
+You can deploy below data models to your AWS account with [NoSQL Workbench for DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/workbench.html).
 
 # Sample Reports
 

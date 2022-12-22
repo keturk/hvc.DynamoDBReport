@@ -26,11 +26,8 @@ def generate_credit_card_offers(aws: str, csv: str, silent: bool,
 
     output_table = PrettyTable()
     output_table.field_names = [
-        "PK", "SK", "CreatedBy", "CreatedDate", "LastModified", "OfferDescription", "OfferEffectiveDate", "OfferExpiryDate", "OfferId", "OfferSubType", "OfferType", "OfferUrl"
+        "PK", "SK", "AccountId", "AccountOfferEndDate", "AccountOfferStartDate", "GSI1SK", "OfferId", "OfferType", "Status", "StatusChangeDate"
     ]
-    output_table.sortby = 'LastModified'
-    output_table.reversesort = True
-
     session = boto3.Session(profile_name=aws)
     dynamodb = session.resource('dynamodb')
 

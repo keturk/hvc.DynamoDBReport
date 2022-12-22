@@ -21,14 +21,14 @@ def generate_credit_card_offers(aws: str, csv: str, silent: bool,
 
     csv_filename = csv
     field_names = [
-        "PK", "SK", "CreatedBy", "CreatedDate", "LastModified", "OfferDescription", "OfferEffectiveDate", "OfferExpiryDate", "OfferId", "OfferSubType", "OfferType", "OfferUrl"
+        "PK", "SK", "AccountId", "AccountOfferEndDate", "AccountOfferStartDate", "GSI1SK", "OfferId", "OfferType", "Status", "StatusChangeDate"
     ]
     key_condition = Key(f'PK').eq(f'{pk}') & Key('SK').begins_with(f'{sk}')
 
     report_common.generate_report(
         aws_profile=aws,
         table_name=f'CreditCardOffers', index_name=None,
-        sort_column=f'LastModified', reverse_sort=True,
+        sort_column=None, reverse_sort=False,
         field_names=field_names,
         key_condition=key_condition,
         filter_expression=None,
