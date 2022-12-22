@@ -61,3 +61,11 @@ As of now, **hvc.DynamoDBReport** generates a Python script that uses Boto3 tabl
 
 Although, it doesn't support **PartiQL** yet, **hvc.DynamoDBReport** is not developed as an alternative to **PartiQL**. Future versions of **hvc.DynamoDBReport** may add **PartiQL** support if there is enough interest for it.
 
+## hvc Libraries used by hvc.DynamoDBReport
+**hvc.DynamoDBReport** uses other hvc nuget packages which contain common functionality which is used by other **hvc** generators. 
+
+Links to public GitHub repositories are as follows:
+[hvc.Extensions](https://github.com/keturk/hvc.Extensions)  Common extension methods for various BCL classes.
+[hvc.DataStructures](https://github.com/keturk/hvc.DataStructures) Common data structures for modelling various entities.
+[hvc.Generator](https://github.com/keturk/hvc.Generator) Common code for **hvc** code generators.
+[hvc.Parser](https://github.com/keturk/hvc.Parser) Common code for parsing simple domain specific languages with **[Antlr4](https://www.antlr.org/)**.

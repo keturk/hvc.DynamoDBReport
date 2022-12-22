@@ -16,7 +16,7 @@
 
   <ItemGroup>
     <PackageReference Include="hvc.DataStructures" Version="1.0.1" />
-    <PackageReference Include="hvc.Generator" Version="1.0.0" />
+    <PackageReference Include="hvc.Generator" Version="1.0.1" />
     <PackageReference Include="hvc.Parser" Version="1.0.0" />
   </ItemGroup>
 
